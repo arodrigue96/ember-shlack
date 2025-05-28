@@ -12,9 +12,9 @@
           <select
             class='block appearance-none w-full bg-white border border-grey-light hover:border-grey px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline'
           >
-            <option value='' disabled>Select a user</option>
-            <option value='1'>Testy Testerson</option>
-            <option value='2'>Sample McData</option>
+            <option selected={{not this.userId}} value=''>Select a user</option>
+            <option selected={{eq this.userId '1'}} value='1'>Testy Testerson</option>
+            <option selected={{eq this.userId '2'}} value='2'>Sample McData</option>
           </select>
           <div
             class='pointer-events-none absolute pin-y pin-r flex items-center px-2 text-grey-darker'
