@@ -1,17 +1,21 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
+import { inject as service } from '@ember/service';
+import AuthService from 'shlack/services/auth';
+
+/**
+ * @type {AuthService}
+ */
 
 export default class LoginFormComponent extends Component {
   @tracked
   userId = null;
 
+  @service auth;
+
   get isDisabled() {
     return !this.userId;
-  }
-
-  loginAsUserWithId(value) {
-    console.log('Login as user with ID:', value);
   }
 
   /**
@@ -33,7 +37,9 @@ export default class LoginFormComponent extends Component {
   onLoginFormSubmit(event) {
     const { target } = event;
     const valid = target.querySelector('select').value;
+
     event.preventDefault();
-    this.loginAsUserWithId(valid);
+
+    this.auth.loginWithUserId(valid);
   }
 }
