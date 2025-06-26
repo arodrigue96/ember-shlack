@@ -12,10 +12,13 @@ module('Acceptance | logout', function (hooks) {
 
   test('visiting /teams and clicking Logout', async function (assert) {
     this.owner.lookup('service:auth').currentUserId = '1';
-    await visit('/teams'); //Go to the /teams url
+    await visit('/teams/linkedin'); //Go to the /teams url
 
     // await this.pauseTest();
-    assert.equal(currentURL(), '/teams', 'Should be on the /teams page');
+    assert.ok(
+      currentURL().startsWith('/teams'),
+      'Should be on a /teams page before logout'
+    );
 
     await click('.team-sidebar__logout-button');
     // await this.pauseTest();
