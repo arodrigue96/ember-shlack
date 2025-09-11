@@ -2,12 +2,60 @@ import { module, test } from 'qunit';
 import { visit, currentURL, click } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import MockAuthService from '../stubs/auth-service';
+import Pretender from 'pretender';
 
 module('Acceptance | logout', function (hooks) {
   setupApplicationTest(hooks);
+  let server;
 
   hooks.beforeEach(function () {
+    server = new Pretender();
+
+    server.get('/api/teams', function () {
+      const data = {
+        teams: [
+          {
+            id: 'linkedin',
+            name: 'LinkedIn',
+            order: 2,
+            iconUrl: '/assets/img/linkedin.png',
+          },
+        ],
+      };
+      return [
+        200,
+        { 'Content-Type': 'application/json' },
+        JSON.stringify(data),
+      ];
+    });
+
+    server.get('/api/teams/:id', function () {
+      const data = {
+        id: 'linkedin',
+        name: 'LinkedIn',
+        order: 2,
+        iconUrl: '/assets/img/linkedin.png',
+        channels: [
+          {
+            id: 'recruiting',
+            name: 'recruiting',
+            description: 'Recruiting',
+            teamId: 'linkedin',
+          },
+        ],
+      };
+      return [
+        200,
+        { 'Content-Type': 'application/json' },
+        JSON.stringify(data),
+      ];
+    });
+
     this.owner.register('service:auth', MockAuthService);
+  });
+
+  hooks.afterEach(function () {
+    if (server) server.shutdown();
   });
 
   test('visiting /teams and clicking Logout', async function (assert) {

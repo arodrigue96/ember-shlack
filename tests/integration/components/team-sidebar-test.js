@@ -31,15 +31,23 @@ module('Integration | Component | team-sidebar', function (hooks) {
   });
 
   test('it renders with custom assertions', async function (assert) {
-    await render(hbs`<TeamSidebar />`);
+    this.set('myTeam', {
+      name: '',
+      channels: [
+        {
+          name: 'general',
+        },
+      ],
+    });
 
-    // Check for the presence of specific elements instead of comparing the entire text content
-    assert.ok(
-      this.element.querySelector('.team-sidebar'),
-      'Team sidebar container exists'
+    await render(hbs`<TeamSidebar @team={{this.myTeam}} />`);
+
+    assert.deepEqual(
+      this.element.textContent
+        .trim()
+        .replace(/\s*\n+\s*/g, '\n')
+        .split('\n'),
+      ['Aniol Rodriguez', 'Channels', '#', 'general', 'Logout']
     );
-
-    // For block usage test, you might want to test differently or skip
-    // since this component likely doesn't use block content
   });
 });
