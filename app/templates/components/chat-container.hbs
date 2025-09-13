@@ -3,5 +3,5 @@
   {{did-insert this.loadMessages}}
   {{did-update this.loadMessages @channel}}
 >
-  {{yield this.messages}}
+  {{yield this.messages (hash createMessage=this.createMessage)}}
 </main>

@@ -1,18 +1,18 @@
 <!-- Channel -->
 
-<ChatContainer @channel={{this.model}} as |messages|>
+<ChatContainer @channel={{this.model}} as |messages channelApi|>
   <ChannelHeader
     @title={{this.model.name}}
     @description={{this.model.description}}
   />
-
   {{format-timestamp '05-01-2019'}}
+
   <!-- Channel Message List -->
   <div class='py-4 flex-1 overflow-y-scroll channel-messages-list' role='list'>
     {{#each messages as |m|}}
       <Message @message={{m}} />
     {{/each}}
   </div>
-  <ChannelFooter />
 
+  <ChannelFooter @sendMessage={{channelApi.createMessage}} />
 </ChatContainer>
