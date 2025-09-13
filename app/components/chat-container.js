@@ -27,6 +27,19 @@ export default class ChatContainerComponent extends Component {
   }
 
   @action
+  async deleteMessage(messageId) {
+    const response = await fetch(`/api/messages/${messageId}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      throw new Error('Could not delete message');
+    }
+
+    this.messages = this.messages.filter((m) => m.id !== messageId);
+  }
+
+  @action
   async createMessage(body) {
     const {
       channel: { id: channelId, teamId },
